@@ -23,11 +23,11 @@ CREATE TABLE IF NOT EXISTS COMTRADE.cfg (
 , file_content     mini.dm_text        -- File contents
 , file_content_md5 mini.dm_md5         -- MD5 hash of file contents
 
--- 5.3.1 Station name, identiÞcation, and revision year
+-- 5.3.1 Station name, identification, and revision year
 -- station_name,rec_dev_id,rev_year<CR/LF>
 , station_name   mini.dm_varchar_64  -- Name of the substation location. Non-critical, alphanumeric, minimum length = 0 characters, maximum length = 64 characters.
 , rec_dev_id     mini.dm_varchar_64  -- Identification number or name of the recording device. Non-critical, alphanumeric, minimum length = 0 characters, maximum length = 64 characters
-, rev_year       mini.dm_year  CHECK (rev_year IN (1991, 1999))       -- Year of the standard revision, e.g. 1999, that identifies the COMTRADE file version. Critical, numeric, minimum length = 4 characters, maximum length = 4 characters. This field shall identify that the file structure differs from the file structure requirement in the original IEEE Std C37.111-1991 COMTRADE Standard. Absence of the field or an empty field is interpreted to mean that the file complies with the 1991 version of the standard.
+, rev_year       mini.dm_year CHECK (rev_year IN (1991, 1999))       -- Year of the standard revision, e.g. 1999, that identifies the COMTRADE file version. Critical, numeric, minimum length = 4 characters, maximum length = 4 characters. This field shall identify that the file structure differs from the file structure requirement in the original IEEE Std C37.111-1991 COMTRADE Standard. Absence of the field or an empty field is interpreted to mean that the file complies with the 1991 version of the standard.
 
 -- 5.3.2 Number and type of channels
 -- TT,##A,##D<CR/LF>

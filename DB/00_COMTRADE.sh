@@ -23,3 +23,11 @@ psql --host=$host --dbname=$dbname --username=$username --set=ON_ERROR_STOP=on -
 name=test.dat
 filename=test.dat
 psql --host=$host --dbname=$dbname --username=$username --set=ON_ERROR_STOP=on --log-file=00_COMTRADE.log -c "UPDATE COMTRADE.dat SET file_name='$filepath$filename', file_content = convert_from(pg_read_binary_file('$filepath$filename'), 'WIN866')::text WHERE name LIKE '$name';"
+
+name=test_binary.cfg
+filename=test_binary.cfg
+psql --host=$host --dbname=$dbname --username=$username --set=ON_ERROR_STOP=on --log-file=00_COMTRADE.log -c "UPDATE COMTRADE.cfg SET file_name='$filepath$filename', file_content = convert_from(pg_read_binary_file('$filepath$filename'), 'WIN866')::text WHERE name LIKE '$name';"
+
+name=test_binary.dat
+filename=test_binary.dat
+psql --host=$host --dbname=$dbname --username=$username --set=ON_ERROR_STOP=on --log-file=00_COMTRADE.log -c "UPDATE COMTRADE.dat SET file_name='$filepath$filename', file_content = convert_from(pg_read_binary_file('$filepath$filename'), 'WIN866')::text WHERE name LIKE '$name';"

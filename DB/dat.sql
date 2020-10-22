@@ -4,8 +4,7 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Table: "COMTRADE.dat"
- * dat
- * Файл с данными (*.dat)
+ * The data file (*.dat)
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -16,9 +15,9 @@ SET SESSION ROLE role_owner;
 CREATE TABLE IF NOT EXISTS COMTRADE.dat (
   id           mini.dm_id          -- ID (Identifier)
 , id_cfg       mini.dm_id          -- ID Cfg
-, name         mini.dm_long_string -- Наименование
-, file_name    mini.dm_long_string -- Имя файла
-, file_content mini.dm_text        -- Содержимое файла
+, name         mini.dm_long_string -- Name
+, file_name    mini.dm_long_string -- File name
+, file_content mini.dm_text        -- File contents
 -- 6.3 ASCII data fle format
 -- n, timestamp, A1, A2,...Ak, D1, D2,...Dm
 , n            integer[]           -- Sample number. Critical, integer, numeric, minimum length = 1 character, maximum length = 10 characters, minimum value = 1, maximum value = 9999999999.
@@ -86,7 +85,7 @@ GRANT ALL ON SEQUENCE COMTRADE.dat_id_seq TO role_owner;
 /*
  * Comments
  */
-COMMENT ON TABLE COMTRADE.dat               IS 'Файл с данными (*.dat)';
+COMMENT ON TABLE COMTRADE.dat               IS 'The data file (*.dat)';
 COMMENT ON COLUMN COMTRADE.dat.id           IS 'ID (Identifier)';
 COMMENT ON COLUMN COMTRADE.dat.id_cfg       IS 'ID Cfg';
 COMMENT ON COLUMN COMTRADE.dat.name         IS 'Name';

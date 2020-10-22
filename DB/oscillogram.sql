@@ -4,7 +4,7 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Table: "COMTRADE.oscillogram"
- * oscillogram
+ * Oscillogram
  */
 
 SET CLIENT_ENCODING TO 'UTF8';

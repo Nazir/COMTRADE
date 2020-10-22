@@ -5,7 +5,6 @@
  *
  * Filling data for table "sys.application"
  * Application
- * Приложения
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
