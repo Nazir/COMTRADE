@@ -252,7 +252,7 @@ BEGIN
             IF COALESCE(value_var, '') = '' THEN 
                 value_var = '0' || value_var;
             END IF;
-            NEW.samp = array_append(NEW.samp::int[], value_var::int);
+            NEW.samp = array_append(NEW.samp::float[], value_var::float);
 
             value_var = trim(values_var[2]); 
             IF COALESCE(value_var, '') = '' THEN 
