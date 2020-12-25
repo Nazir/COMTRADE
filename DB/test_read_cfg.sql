@@ -260,9 +260,9 @@ BEGIN
     values_var = string_to_array(line_var, ',', '');
     value_var = trim(values_var[1]); 
     value_var = upper(COALESCE(value_var, ''));
-    UPDATE comtrade.cfg SET ft = CASE WHEN value_var = 'ASCII' THEN TRUE WHEN value_var = 'BINARY' THEN FALSE ELSE NULL END WHERE name=name_var;
+    UPDATE comtrade.cfg SET ft = value_var WHERE name=name_var;
 
-    IF rev_year_var IN (1999) THEN
+    IF rev_year_var IN (1999, 2013) THEN
         file_content_var = right(file_content_var, char_length(file_content_var) - position(Chr(13) || Chr(10) in file_content_var) - 1);
 
         line_var = substring(file_content_var from 1 for position(Chr(13) || Chr(10) in file_content_var) - 1);
@@ -273,6 +273,42 @@ BEGIN
             value_var = '0' || trim(value_var);
         END IF;
         UPDATE comtrade.cfg SET timemult = value_var::float WHERE name=name_var;
+    END IF;
+
+    IF rev_year_var IN (2013) THEN
+        file_content_var = right(file_content_var, char_length(file_content_var) - position(Chr(13) || Chr(10) in file_content_var) - 1);
+
+        line_var = substring(file_content_var from 1 for position(Chr(13) || Chr(10) in file_content_var) - 1);
+        values_var = string_to_array(line_var, ',', '');
+
+        value_var = trim(values_var[1]);
+        IF COALESCE(value_var, '') = '' THEN
+            value_var = trim(value_var);
+        END IF;
+        UPDATE comtrade.cfg SET time_code = value_var::float WHERE name=name_var;
+
+        value_var = trim(values_var[2]);
+        IF COALESCE(value_var, '') = '' THEN
+            value_var = trim(value_var);
+        END IF;
+        UPDATE comtrade.cfg SET local_code = value_var::float WHERE name=name_var;
+
+        file_content_var = right(file_content_var, char_length(file_content_var) - position(Chr(13) || Chr(10) in file_content_var) - 1);
+
+        line_var = substring(file_content_var from 1 for position(Chr(13) || Chr(10) in file_content_var) - 1);
+        values_var = string_to_array(line_var, ',', '');
+
+        value_var = trim(values_var[1]);
+        IF COALESCE(value_var, '') = '' THEN
+            value_var = trim(value_var);
+        END IF;
+        UPDATE comtrade.cfg SET tmq_code = value_var::float WHERE name=name_var;
+
+        value_var = trim(values_var[2]);
+        IF COALESCE(value_var, '') = '' THEN
+            value_var = trim(value_var);
+        END IF;
+        UPDATE comtrade.cfg SET leapsec = value_var::float WHERE name=name_var;
     END IF;
 
     -- RAISE EXCEPTION 'line_var="%"; values_var="%"; value_var="%"; int_a_var="%", int_d_var="%".', line_var, values_var, value_var, int_a_var, int_d_var;

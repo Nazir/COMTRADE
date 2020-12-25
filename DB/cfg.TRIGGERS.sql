@@ -290,7 +290,7 @@ BEGIN
         values_var = string_to_array(line_var, ',', '');
         value_var = trim(values_var[1]); 
         value_var = upper(trim(COALESCE(value_var, '')));
-        NEW.ft = CASE WHEN value_var = 'ASCII' THEN TRUE WHEN value_var = 'BINARY' THEN FALSE ELSE NULL END;
+        NEW.ft = value_var;
 
         IF rev_year_var IN (1999, 2013) THEN
             file_content_var = right(file_content_var, char_length(file_content_var) - position(Chr(13) || Chr(10) in file_content_var) - 1);

@@ -21,30 +21,35 @@ DECLARE
   temp_d_var text;
   temp2_a_var text;
   temp2_d_var text;
+
+  nrates_first_var int;
+
 BEGIN
-    name_var = 'test.cfg';
-    
+    name_var = 'test1.cfg';
+
     SELECT d.id, c.tt, c.nn_a, c.nn_d, c.nrates, c.samp, c.endsamp, d.file_content FROM comtrade.dat AS d INNER JOIN comtrade.cfg AS c ON c.id = d.id_cfg WHERE c.name=name_var
-    INTO id_var, int_tt_var, int_a_var, int_d_var, nrates_var, samp_var, endsamp_var, file_content_var; 
+    INTO id_var, int_tt_var, int_a_var, int_d_var, nrates_var, samp_var, endsamp_var, file_content_var;
 
     UPDATE comtrade.dat SET n = NULL WHERE id=id_var;
     UPDATE comtrade.dat SET timestamp = NULL WHERE id=id_var;
     UPDATE comtrade.dat SET channel_a = NULL WHERE id=id_var;
     UPDATE comtrade.dat SET channel_d = NULL WHERE id=id_var;
 
+    nrates_first_var = 1;
+
     WHILE NOT nrates_var = 0 LOOP
-        WHILE NOT endsamp_var[nrates_var] = 0 LOOP
+        WHILE NOT endsamp_var[nrates_var] = nrates_first_var LOOP
             line_var = substring(file_content_var from 1 for position(Chr(13) || Chr(10) in file_content_var) - 1);
 
             values_var = string_to_array(line_var, ',', '');
 
-            value_var = values_var[1]; 
+            value_var = values_var[1];
             IF COALESCE(value_var, '') = '' THEN
                 value_var = '0' || trim(value_var);
             END IF;
             UPDATE comtrade.dat SET n = array_append(n::int[], value_var::int) WHERE id=id_var;
-    
-            value_var = values_var[2]; 
+
+            value_var = values_var[2];
             IF COALESCE(value_var, '') = '' THEN
                 value_var = '0' || trim(value_var);
             END IF;
@@ -56,7 +61,7 @@ BEGIN
             temp_a_var = NULL;
             temp_d_var = NULL;
             WHILE int_tt_var2 <= int_tt_var LOOP
-                value_var = values_var[int_tt_var2 + 2]; 
+                value_var = values_var[int_tt_var2 + 2];
                 IF COALESCE(value_var, '') = '' THEN
                     value_var = '0' || trim(value_var);
                 END IF;
@@ -79,7 +84,7 @@ BEGIN
             temp_a_var = '{' || temp_a_var || '}';
             temp2_a_var = concat_ws(',', temp2_a_var, temp_a_var);
             temp_d_var = '{' || temp_d_var || '}';
-            temp2_d_var = concat_ws(',', temp2_d_var, temp_a_var);
+            temp2_d_var = concat_ws(',', temp2_d_var, temp_d_var);
 --            UPDATE comtrade.dat SET channel_a = CAST(temp_a_var AS int[]) WHERE id=id_var;
             -- RAISE EXCEPTION 'channel_a_var="%". channel_d_var="%"', channel_a_var, channel_d_var;
 --            UPDATE comtrade.dat SET channel_a = CAST(channel_a AS int[][]) || channel_a_var::int[] WHERE id=id_var;
@@ -94,7 +99,7 @@ BEGIN
         END LOOP;
         temp2_a_var = '{' || temp2_a_var || '}';
         temp2_d_var = '{' || temp2_d_var || '}';
-        UPDATE comtrade.dat SET channel_a = CAST(temp2_a_var AS int[][]) WHERE id=id_var;
+        UPDATE comtrade.dat SET channel_a = CAST(temp2_a_var AS real[][]) WHERE id=id_var;
         UPDATE comtrade.dat SET channel_d = CAST(temp2_d_var AS int[][]) WHERE id=id_var;
         -- RAISE EXCEPTION 'temp2_var="%".', temp2_var;
         nrates_var := nrates_var - 1;

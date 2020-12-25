@@ -86,8 +86,9 @@ CREATE TABLE IF NOT EXISTS COMTRADE.cfg (
 , datetime_start mini.dm_timestamp -- Time of the trigger point.
 
 -- 7.4.9 Data file type
+-- The data file type shall be identified as an ASCII, binary, binary32, or float32 file by the file type identifier in th following format:
 -- ft <CR/LF>
-, ft             mini.dm_boolean   -- File type. Critical, alphabetical, non-case sensitive, minimum length = 5 characters, maximum length = 6 characters. Only text allowed = ASCII or ascii, BINARY or binary. ASCII = TRUE или BINARY = FALSE
+, ft             mini.dm_varchar_8   -- Data file type. Critical, alphabetical, non-case sensitive, minimum length = 5 characters, maximum length = 8 characters.
 
 -- 7.4.10 Time stamp multiplication factor
 -- timemult<CR/LF>
@@ -137,16 +138,6 @@ ALTER TABLE IF EXISTS COMTRADE.cfg ALTER COLUMN id SET DEFAULT nextval('COMTRADE
  */
 ALTER TABLE IF EXISTS COMTRADE.cfg OWNER TO role_owner;
 GRANT ALL ON COMTRADE.cfg TO role_owner;
--- GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON COMTRADE.cfg TO role_superadmin;
--- GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON COMTRADE.cfg TO role_admin;
--- GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON COMTRADE.cfg TO role_expert;
--- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO role_moderator;
--- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO role_dispatcher;
--- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO role_supervisor;
--- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO role_manager;
--- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO role_user;
--- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO role_read;
--- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO role_guest;
 -- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO PUBLIC;
 /*
  * Columns security
@@ -164,57 +155,62 @@ GRANT ALL ON SEQUENCE COMTRADE.cfg_id_seq TO role_owner;
 /*
  * Comments
  */
-COMMENT ON TABLE COMTRADE.cfg                   IS 'A file with the configuration (*.cfg)';
-COMMENT ON COLUMN COMTRADE.cfg.id               IS 'ID (Identifier)';
-COMMENT ON COLUMN COMTRADE.cfg.id_app           IS 'ID Application';
-COMMENT ON COLUMN COMTRADE.cfg.name             IS 'Name';
-COMMENT ON COLUMN COMTRADE.cfg.file_name        IS 'File name';
-COMMENT ON COLUMN COMTRADE.cfg.file_content     IS 'File contents';
+COMMENT ON TABLE COMTRADE.cfg IS 'A file with the configuration (*.cfg)';
+COMMENT ON COLUMN COMTRADE.cfg.id IS 'ID (Identifier)';
+COMMENT ON COLUMN COMTRADE.cfg.id_app IS 'ID Application';
+COMMENT ON COLUMN COMTRADE.cfg.name IS 'Name';
+COMMENT ON COLUMN COMTRADE.cfg.file_name IS 'File name';
+COMMENT ON COLUMN COMTRADE.cfg.file_content IS 'File contents';
 COMMENT ON COLUMN COMTRADE.cfg.file_content_md5 IS 'MD5 hash of file contents';
 
-COMMENT ON COLUMN COMTRADE.cfg.station_name     IS 'Name of the substation location';
-COMMENT ON COLUMN COMTRADE.cfg.rec_dev_id       IS 'Identification number or name of the recording device';
-COMMENT ON COLUMN COMTRADE.cfg.rev_year         IS 'Year of the standard revision, e.g. 2013, that identifies the COMTRADE file version';
+COMMENT ON COLUMN COMTRADE.cfg.station_name IS 'Name of the substation location';
+COMMENT ON COLUMN COMTRADE.cfg.rec_dev_id IS 'Identification number or name of the recording device';
+COMMENT ON COLUMN COMTRADE.cfg.rev_year IS 'Year of the standard revision, e.g. 2013, that identifies the COMTRADE file version';
 
-COMMENT ON COLUMN COMTRADE.cfg.tt               IS 'Total number of channels';
-COMMENT ON COLUMN COMTRADE.cfg.nn_a             IS 'Number of analog channels followed by identifier A';
-COMMENT ON COLUMN COMTRADE.cfg.nn_d             IS 'Number of status channels followed by identifier D';
+COMMENT ON COLUMN COMTRADE.cfg.tt IS 'Total number of channels';
+COMMENT ON COLUMN COMTRADE.cfg.nn_a IS 'Number of analog channels followed by identifier A';
+COMMENT ON COLUMN COMTRADE.cfg.nn_d IS 'Number of status channels followed by identifier D';
 
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_an        IS 'Analog channel index number';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_ch_id     IS 'Channel identifer';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_ph        IS 'Channel phase identification';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_ccbm      IS 'Circuit component being monitored';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_uu        IS 'Channel units (e.g., kV, V, kA, A)';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_а         IS 'Channel multiplier';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_b         IS 'Channel offset adder';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_skew      IS 'Channel time skew (in µs) from start of sample period';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_min       IS 'Range minimum data value (lower limit of possible data value range) for data values of this channel';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_max       IS 'Range maximum data value (upper limit of possible data value range) for data values of this channel';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_primary   IS 'Channel voltage or current transformer ratio primary factor';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_an IS 'Analog channel index number';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_ch_id IS 'Channel identifer';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_ph IS 'Channel phase identification';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_ccbm IS 'Circuit component being monitored';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_uu IS 'Channel units (e.g., kV, V, kA, A)';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_а IS 'Channel multiplier';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_b IS 'Channel offset adder';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_skew IS 'Channel time skew (in µs) from start of sample period';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_min IS 'Range minimum data value (lower limit of possible data value range) for data values of this channel';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_max IS 'Range maximum data value (upper limit of possible data value range) for data values of this channel';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_primary IS 'Channel voltage or current transformer ratio primary factor';
 COMMENT ON COLUMN COMTRADE.cfg.channels_a_secondary IS 'Channel voltage or current transformer ratio secondary factor';
-COMMENT ON COLUMN COMTRADE.cfg.channels_a_ps        IS 'Primary or secondary data scaling identifier';
+COMMENT ON COLUMN COMTRADE.cfg.channels_a_ps IS 'Primary or secondary data scaling identifier';
 
 
-COMMENT ON COLUMN COMTRADE.cfg.channels_d_dn        IS 'Status channel index number';
-COMMENT ON COLUMN COMTRADE.cfg.channels_d_ch_id     IS 'Channel name';
-COMMENT ON COLUMN COMTRADE.cfg.channels_d_ph        IS 'Channel phase identification';
-COMMENT ON COLUMN COMTRADE.cfg.channels_d_ccbm      IS 'Circuit component being monitored';
-COMMENT ON COLUMN COMTRADE.cfg.channels_d_y         IS 'Normal state of status channel (applies to status channels only), that is, the state of the input when the primary apparatus is in the steady state "in service" condition';
+COMMENT ON COLUMN COMTRADE.cfg.channels_d_dn IS 'Status channel index number';
+COMMENT ON COLUMN COMTRADE.cfg.channels_d_ch_id IS 'Channel name';
+COMMENT ON COLUMN COMTRADE.cfg.channels_d_ph IS 'Channel phase identification';
+COMMENT ON COLUMN COMTRADE.cfg.channels_d_ccbm IS 'Circuit component being monitored';
+COMMENT ON COLUMN COMTRADE.cfg.channels_d_y IS 'Normal state of status channel (applies to status channels only), that is, the state of the input when the primary apparatus is in the steady state "in service" condition';
 
 
-COMMENT ON COLUMN COMTRADE.cfg.lf                   IS 'Nominal line frequency in Hz (for example, 50, 60, 33.333)';
+COMMENT ON COLUMN COMTRADE.cfg.lf IS 'Nominal line frequency in Hz (for example, 50, 60, 33.333)';
 
-COMMENT ON COLUMN COMTRADE.cfg.nrates               IS 'Number of sampling rates in the data file';
-COMMENT ON COLUMN COMTRADE.cfg.samp                 IS 'Sample rate in Hertz (Hz)';
-COMMENT ON COLUMN COMTRADE.cfg.endsamp              IS 'Last sample number at sample rate';
+COMMENT ON COLUMN COMTRADE.cfg.nrates IS 'Number of sampling rates in the data file';
+COMMENT ON COLUMN COMTRADE.cfg.samp IS 'Sample rate in Hertz (Hz)';
+COMMENT ON COLUMN COMTRADE.cfg.endsamp IS 'Last sample number at sample rate';
 
-COMMENT ON COLUMN COMTRADE.cfg.datetime_first       IS 'Time of the first data value in the data file';
-COMMENT ON COLUMN COMTRADE.cfg.datetime_start       IS 'Time of the trigger point';
+COMMENT ON COLUMN COMTRADE.cfg.datetime_first IS 'Time of the first data value in the data file';
+COMMENT ON COLUMN COMTRADE.cfg.datetime_start IS 'Time of the trigger point';
 
-COMMENT ON COLUMN COMTRADE.cfg.ft                   IS 'File type. ASCII = TRUE или BINARY = FALSE';
+COMMENT ON COLUMN COMTRADE.cfg.ft IS 'Data file type. The data file type shall be identified as an ASCII, binary, binary32, or float32 file.';
 
+COMMENT ON COLUMN COMTRADE.cfg.timemult IS 'Multiplication factor for the time differential (timestamp) field in the data file';
 
-COMMENT ON COLUMN COMTRADE.cfg.timemult             IS 'Multiplication factor for the time differential (timestamp) field in the data file';
+COMMENT ON COLUMN COMTRADE.cfg.time_code IS 'Is the same as time code defined in IEEE Std C37.232-2007';
+COMMENT ON COLUMN COMTRADE.cfg.local_code IS 'Is the time difference beetween the local time zone of the recording location and UTC and is in the same format as time_code';
+
+COMMENT ON COLUMN COMTRADE.cfg.tmq_code IS 'Is the time quality indicator code of the reconding device''s clock. It is an indicatian of synchronization realtive to a source and is similar to the time quality indicator code as difined in IEEE Std C37.118.';
+COMMENT ON COLUMN COMTRADE.cfg.leapsec IS 'Is the leap second indicator. It indicates that a leap second may have been added or deleted during the recording resulting in either two pieces of data having the same Second of Century time stamp or a missing second.';
 
 /*
  * Filling data for table "COMTRADE.cfg"
