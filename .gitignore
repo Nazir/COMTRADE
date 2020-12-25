@@ -1,24 +1,17 @@
 *.gitignore.*
 
-*.old.xml
-*.old
-*.swf
-*.ttf
-
-*.png
-*.jpg
-
+*.log
+*.bak
 
 *.tar
 *.tar.gz
 *.7z
 *.zip
 *.rar
-*.log
+
+*.csv
 *.pdf
 *.xls
 *.xlsx
 *.doc
 *.docx
-
-*.csv
