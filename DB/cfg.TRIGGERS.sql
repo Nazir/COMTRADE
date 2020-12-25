@@ -292,17 +292,53 @@ BEGIN
         value_var = upper(trim(COALESCE(value_var, '')));
         NEW.ft = CASE WHEN value_var = 'ASCII' THEN TRUE WHEN value_var = 'BINARY' THEN FALSE ELSE NULL END;
 
-        IF rev_year_var IN (1999) THEN
+        IF rev_year_var IN (1999, 2013) THEN
             file_content_var = right(file_content_var, char_length(file_content_var) - position(Chr(13) || Chr(10) in file_content_var) - 1);
 
             line_var = substring(file_content_var from 1 for position(Chr(13) || Chr(10) in file_content_var) - 1);
             values_var = string_to_array(line_var, ',', '');
 
             value_var = trim(values_var[1]); 
-            IF COALESCE(value_var, '') = '' THEN 
+            IF COALESCE(value_var, '') = '' THEN
                 value_var = '0' || trim(value_var);
             END IF;
             NEW.timemult = value_var::float;
+        END IF;
+
+        IF rev_year_var IN (2013) THEN
+            file_content_var = right(file_content_var, char_length(file_content_var) - position(Chr(13) || Chr(10) in file_content_var) - 1);
+
+            line_var = substring(file_content_var from 1 for position(Chr(13) || Chr(10) in file_content_var) - 1);
+            values_var = string_to_array(line_var, ',', '');
+
+            value_var = trim(values_var[1]);
+            IF COALESCE(value_var, '') = '' THEN
+                value_var = trim(value_var);
+            END IF;
+            NEW.time_code = value_var;
+
+            value_var = trim(values_var[2]);
+            IF COALESCE(value_var, '') = '' THEN
+                value_var = trim(value_var);
+            END IF;
+            NEW.local_code = value_var;
+
+            file_content_var = right(file_content_var, char_length(file_content_var) - position(Chr(13) || Chr(10) in file_content_var) - 1);
+
+            line_var = substring(file_content_var from 1 for position(Chr(13) || Chr(10) in file_content_var) - 1);
+            values_var = string_to_array(line_var, ',', '');
+
+            value_var = trim(values_var[1]);
+            IF COALESCE(value_var, '') = '' THEN
+                value_var = trim(value_var);
+            END IF;
+            NEW.tmq_code = value_var;
+
+            value_var = trim(values_var[2]);
+            IF COALESCE(value_var, '') = '' THEN
+                value_var = trim(value_var);
+            END IF;
+            NEW.leapsec = value_var::int;
         END IF;
 
         -- RAISE EXCEPTION 'line_var="%"; values_var="%"; value_var="%"; int_a_var="%", int_d_var="%".', line_var, values_var, value_var, int_a_var, int_d_var;

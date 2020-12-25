@@ -6,8 +6,18 @@
  * Table: "COMTRADE.cfg"
  * A file with the configuration (*.cfg)
  *
+ * IEC 60255-24
+ * Edition 2.0    2013-04
+ * INTERNATIONAL STANDARD IEEE Std C37.111
+ * INTERNATIONAL ELECTROTECHNICAL COMMISSION
+ * Measuring relays and protection equipment –
+ * Part 24: Common format for transient data exchange (COMTRADE) for power systems
  * IEEE Standard Common Format for Transient Data Exchange (COMTRADE) for Power Systems
- * IEEE Std C37.111-1999 (Revision of IEEE Std C37.111-1991)
+ * IEEE Std C37.111-2013
+ * previous IEEE Std C37.111-1999 (Revision of IEEE Std C37.111-1991)
+ *
+ * IEC 60255-24:2013
+ * IEEE Std C37.111-2013
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -23,19 +33,19 @@ CREATE TABLE IF NOT EXISTS COMTRADE.cfg (
 , file_content     mini.dm_text        -- File contents
 , file_content_md5 mini.dm_md5         -- MD5 hash of file contents
 
--- 5.3.1 Station name, identification, and revision year
+-- 7.4.2 Station name, identification, and revision year
 -- station_name,rec_dev_id,rev_year<CR/LF>
 , station_name   mini.dm_varchar_64  -- Name of the substation location. Non-critical, alphanumeric, minimum length = 0 characters, maximum length = 64 characters.
 , rec_dev_id     mini.dm_varchar_64  -- Identification number or name of the recording device. Non-critical, alphanumeric, minimum length = 0 characters, maximum length = 64 characters
-, rev_year       mini.dm_year CHECK (rev_year IN (1991, 1999))       -- Year of the standard revision, e.g. 1999, that identifies the COMTRADE file version. Critical, numeric, minimum length = 4 characters, maximum length = 4 characters. This field shall identify that the file structure differs from the file structure requirement in the original IEEE Std C37.111-1991 COMTRADE Standard. Absence of the field or an empty field is interpreted to mean that the file complies with the 1991 version of the standard.
+, rev_year       mini.dm_year CHECK (rev_year IN (1991, 1999, 2013))       -- Year of the standard revision, e.g. 2013, that identifies the COMTRADE file version. Critical, numeric, minimum length = 4 characters, maximum length = 4 characters. This field shall identify that the file structure differs from the file structure requirement in the IEEE Std C37.111-1999 and IEEE Std C37.111-1991 COMTRADE standard. Absence of the field or an empty field is interpreted to mean that the file complies with the 1991 version of the standard.
 
--- 5.3.2 Number and type of channels
+-- 7.4.3 Number and type of channels
 -- TT,##A,##D<CR/LF>
 , tt             mini.dm_integer CHECK (tt BETWEEN 1 AND 999999)    -- Total number of channels. Critical, numeric, integer, minimum length = 1 character, maximum length = 7 characters, minimum value = 1, maximum value = 999999, TT must equal the sum of ##A and ##D below.
 , nn_a           mini.dm_integer CHECK (nn_a BETWEEN 0 AND 999999)   -- Number of analog channels followed by identifier A. Critical, alphanumeric, minimum length = 2 characters, maximum length = 7 characters, minimum value = 0A, maximum value = 999999A.
 , nn_d           mini.dm_integer CHECK (nn_d BETWEEN 0 AND 999999)    -- Number of status channels followed by identifier D. Critical, alphanumeric, minimum length = 2 characters, maximum length = 7 characters, minimum value = 0D, maximum value = 999999D.
 
--- 5.3.3 Analog channel information
+-- 7.4.4 Analog channel information
 -- An,ch_id,ph,ccbm,uu,a,b,skew,min,max,primary,secondary,PS<CR/LF>
 , channels_a_an           mini.dm_integer[]     -- Analog channel index number. Critical, numeric, integer, minimum length = 1 character, maximum length = 6 characters, minimum value = 1, maximum value = 999999. Leading zeroes or spaces are not required. Sequential counter from 1 to total number of analog channels (##A) without regard to recording device channel number.
 , channels_a_ch_id        mini.dm_varchar_64[]  -- Channel identifer. Non-critical, alphanumeric, minimum length = 0 characters, maximum length = 64 characters.
@@ -51,7 +61,7 @@ CREATE TABLE IF NOT EXISTS COMTRADE.cfg (
 , channels_a_secondary    mini.dm_float[]       -- Channel voltage or current transformer ratio secondary factor. Critical, real, numeric, minimum length = 1 character, maximum length = 32 characters.
 , channels_a_ps           mini.dm_char_1[]      -- Primary or secondary data scaling identifier. The character specifies whether the value received from the channel conversion factor equation ax+b will represent a primary (P) or secondary (S) value. Critical, alphabetical, minimum length = 1 character, maximum length = 1 character. The only valid characters are: p,P,s,S.
 
--- 5.3.4 Status (digital) channel information
+-- 7.4.5 Status (digital) channel information
 -- Dn,ch_id,ph,ccbm,y<CR/LF>
 , channels_d_dn           mini.dm_integer[]    -- Status channel index number. Critical, integer, numeric, minimum length = 1 character, maximum length = 6 characters, minimum value = 1, maximum value = 999999. Leading zeroes or spaces are not required. Sequential counter ranging from 1 to total number of status channels (##D) without regard to recording device channel number.
 , channels_d_ch_id        mini.dm_varchar_64[] -- Channel name. Non-critical, alphanumeric, minimum length = 0 characters, maximum length = 64 characters.
@@ -59,29 +69,40 @@ CREATE TABLE IF NOT EXISTS COMTRADE.cfg (
 , channels_d_ccbm         mini.dm_varchar_64[] -- Circuit component being monitored. Non-critical, alphanumeric, minimum length = 0 characters, maximum length = 64 characters.
 , channels_d_y            mini.dm_bit[]        -- Normal state of status channel (applies to status channels only), that is, the state of the input when the primary apparatus is in the steady state "in service" condition. Critical, integer, numeric, minimum length = 1 character, maximum length = 1 character, the only valid values are 0 or 1.
 
--- 5.3.5 Line frequency
+-- 7.4.6 Line frequency
 -- lf<CR/LF>
 , lf                      mini.dm_float        -- Nominal line frequency in Hz (for example, 50, 60, 33.333). Non-critical, real, numeric, minimum length = 0 characters, maximum length = 32 characters. Standard floating point notation may be used (Kreyszig [B7]).
 
--- 5.3.6 Sampling rate information
+-- 7.4.7 Sampling rate information
 -- This section contains information on the sample rates and the number of data samples at a given rate.
 , nrates         mini.dm_integer   -- Number of sampling rates in the data file. Critical, integer, numeric, minimum length = 1 character, maximum length = 3 characters, minimum value = 0, maximum value = 999.
 , samp           mini.dm_float[]   -- Sample rate in Hertz (Hz). Critical, real, numeric, minimum length = 1 character, maximum length = 32 characters. Standard floating point notation may be used (Kreyszig [B7]).
 , endsamp        mini.dm_integer[] -- Last sample number at sample rate. Critical, integer, numeric, minimum length = 1 character, maximum length = 10 characters, minimum value = 1, maximum value = 9999999999.
 
--- 5.3.7 Date/time stamps
+-- 7.4.8 Date/time stamps
 -- dd/mm/yyyy,hh:mm:ss.ssssss<CR/LF>
 -- dd/mm/yyyy,hh:mm:ss.ssssss<CR/LF>
 , datetime_first mini.dm_timestamp -- Time of the first data value in the data file.
 , datetime_start mini.dm_timestamp -- Time of the trigger point.
 
--- 5.3.8 Data file type
+-- 7.4.9 Data file type
 -- ft <CR/LF>
 , ft             mini.dm_boolean   -- File type. Critical, alphabetical, non-case sensitive, minimum length = 5 characters, maximum length = 6 characters. Only text allowed = ASCII or ascii, BINARY or binary. ASCII = TRUE или BINARY = FALSE
 
--- 5.3.9 Time stamp multiplication factor
+-- 7.4.10 Time stamp multiplication factor
 -- timemult<CR/LF>
 , timemult       mini.dm_float     -- Multiplication factor for the time differential (timestamp) field in the data file. Critical, real, numeric, minimum length = 1 character, maximum length = 32 characters. Standard floating point notation may be used (Kreyszig [B7]).
+
+-- since IEEE Std C37.111-2013
+-- time_code,local_code<CR/LF>
+-- 7.4.11 Time information and relationship beetween local time and UTC
+, time_code      mini.dm_varchar_6 -- is the same as time code defined in IEEE Std C37.232-2007. Critical, alphanumeric, minimum length = 1 character, maximum length = 6 characters.
+, local_code     mini.dm_varchar_6 -- is the time difference beetween the local time zone of the recording location and UTC and is in the same format as time_code. Critical, alphanumeric, minimum length = 1 character, maximum length = 6 characters.
+
+-- 7.4.12 Time quality of samples
+-- tmq_code,leapsec<CR/LF>
+, tmq_code       mini.dm_char_1    -- is the time quality indicator code of the reconding device's clock. It is an indicatian of synchronization realtive to a source and is similar to the time quality indicator code as difined in IEEE Std C37.118. Critical, hexadecimal, minimum length = 1 character, maximum length = 1 characters. The time quality value used shall be the quality at the time of time stamp.
+, leapsec        mini.dm_smallint CHECK (leapsec BETWEEN 0 AND 3) -- is the leap second indicator. It indicates that a leap second may have been added or deleted during the recording resulting in either two pieces of data having the same Second of Century time stamp or a missing second. Critical, integer, minimum length = 1 character, maximum length = 1 characters. The only valid values are: 3 = time source does not have the capability to address leap second, 2 = leap second subtracted in the record, 1 = leap second added in the record, and 0 = no leap second in the record.
 ) WITHOUT OIDS;
 
 /*
@@ -153,7 +174,7 @@ COMMENT ON COLUMN COMTRADE.cfg.file_content_md5 IS 'MD5 hash of file contents';
 
 COMMENT ON COLUMN COMTRADE.cfg.station_name     IS 'Name of the substation location';
 COMMENT ON COLUMN COMTRADE.cfg.rec_dev_id       IS 'Identification number or name of the recording device';
-COMMENT ON COLUMN COMTRADE.cfg.rev_year         IS 'Year of the standard revision, e.g. 1999, that identifies the COMTRADE file version';
+COMMENT ON COLUMN COMTRADE.cfg.rev_year         IS 'Year of the standard revision, e.g. 2013, that identifies the COMTRADE file version';
 
 COMMENT ON COLUMN COMTRADE.cfg.tt               IS 'Total number of channels';
 COMMENT ON COLUMN COMTRADE.cfg.nn_a             IS 'Number of analog channels followed by identifier A';
