@@ -4,8 +4,7 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Constraints for table "COMTRADE.oscillogram"
- * oscillogram
- * Осциллограмма
+ * Oscillogram
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -23,8 +22,8 @@ SELECT mini.fc_add_constraint('COMTRADE', 'oscillogram');
  * Unique for table "COMTRADE.oscillogram"
  */
 -- -- ALTER TABLE IF EXISTS COMTRADE.oscillogram DROP CONSTRAINT IF EXISTS unq_oscillogram;
--- ALTER TABLE IF EXISTS COMTRADE.oscillogram ADD CONSTRAINT unq_oscillogram UNIQUE (id_dat, num);
-SELECT mini.fc_add_constraint('COMTRADE', 'oscillogram', 'unq_oscillogram', 'UNIQUE', 'id_dat, num');
+-- ALTER TABLE IF EXISTS COMTRADE.oscillogram ADD CONSTRAINT unq_oscillogram UNIQUE (id_dat, channel_a_an, num);
+SELECT mini.fc_add_constraint('COMTRADE', 'oscillogram', 'unq_oscillogram', 'UNIQUE', 'id_dat, channel_a_an, num');
 
 /*
  * Foreign key for table "COMTRADE.oscillogram" to table "COMTRADE.dat"

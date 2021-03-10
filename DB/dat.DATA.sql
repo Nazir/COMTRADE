@@ -20,7 +20,7 @@ DO $BODY$
 DECLARE
     id_cfg_var COMTRADE.dat.id%TYPE;
 BEGIN
-    SELECT id FROM COMTRADE.cfg WHERE name LIKE 'test.cfg' INTO id_cfg_var LIMIT 1;
+    SELECT id FROM COMTRADE.cfg WHERE name LIKE 'test1.ascii.cfg' INTO id_cfg_var LIMIT 1;
 
     /*
      * dat: test.dat
@@ -36,9 +36,9 @@ BEGIN
     ) VALUES (
       DEFAULT    -- ID (Identifier)
     , id_cfg_var -- ID Cfg
-    , 'test.dat' -- Наименование
-    , 'test.dat' -- Имя файла
-    -- , convert_from(pg_read_binary_file('test.dat'), 'WIN866')::text -- Содержимое файла
+    , 'test1.ascii.dat' -- Наименование
+    , 'test1.ascii.dat' -- Имя файла
+    -- , pg_read_binary_file('test.dat') -- Содержимое файла
 
     , FALSE)
     ON CONFLICT DO NOTHING
@@ -51,9 +51,9 @@ BEGIN
     --   _deleted = EXCLUDED._deleted          -- The record is deleted?
     ;
 
-    SELECT id FROM COMTRADE.cfg WHERE name LIKE 'test_binary.cfg' INTO id_cfg_var LIMIT 1;
+    SELECT id FROM COMTRADE.cfg WHERE name LIKE 'test1.binary.cfg' INTO id_cfg_var LIMIT 1;
     /*
-     * dat: test_binary.dat
+     * dat: test1.binary.dat
      */
     INSERT INTO COMTRADE.dat(
       id           -- ID (Identifier)
@@ -66,9 +66,9 @@ BEGIN
     ) VALUES (
       DEFAULT    -- ID (Identifier)
     , id_cfg_var -- ID Cfg
-    , 'test_binary.dat' -- Наименование
-    , 'test_binary.dat' -- Имя файла
-    -- , convert_from(pg_read_binary_file('test_binary.dat'), 'WIN866')::text -- Содержимое файла
+    , 'test1.binary.dat' -- Наименование
+    , 'test1.binary.dat' -- Имя файла
+    -- , pg_read_binary_file('test1.binary.dat') -- Содержимое файла
 
     , FALSE)
     ON CONFLICT DO NOTHING

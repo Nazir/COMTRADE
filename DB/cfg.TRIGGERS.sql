@@ -54,7 +54,7 @@ BEGIN
         --     -- i will take on the values 1,2,3,4,5,6,7,8,9,10 within the loop
         -- END LOOP;
         NEW.station_name = trim(values_var[1])::text;
-        NEW.rec_dev_id = values_var[2]::text;
+        NEW.rec_dev_id = trim(values_var[2]::text);
         NEW.rev_year = NULL;
         rev_year_var = 1991;
         IF array_length(values_var, 1) = 3 THEN
