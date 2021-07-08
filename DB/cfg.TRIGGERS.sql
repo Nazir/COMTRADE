@@ -25,7 +25,7 @@ DECLARE
   value_var text;
   int_a_var int;
   int_d_var int;
-  nrates_var int;
+  nrates_var int4;
   rev_year_var int;
 BEGIN
   IF TG_OP IN ('INSERT', 'UPDATE') THEN
@@ -234,8 +234,8 @@ BEGIN
         IF COALESCE(value_var, '') = '' THEN 
             value_var = '0' || trim(value_var);
         END IF;
-        nrates_var = value_var::int;
-        NEW.nrates = value_var::int;
+        nrates_var = value_var::int4;
+        NEW.nrates = value_var::int4;
 
         line_var = substring(file_content_var from 1 for position(Chr(13) || Chr(10) in file_content_var) - 1);
 
@@ -290,7 +290,7 @@ BEGIN
         values_var = string_to_array(line_var, ',', '');
         value_var = trim(values_var[1]); 
         value_var = upper(trim(COALESCE(value_var, '')));
-        NEW.ft = value_var;
+        NEW.ft = upper(trim(value_var));
 
         IF rev_year_var IN (1999, 2013) THEN
             file_content_var = right(file_content_var, char_length(file_content_var) - position(Chr(13) || Chr(10) in file_content_var) - 1);

@@ -34,4 +34,10 @@ ALTER TABLE IF EXISTS COMTRADE.dat
       REFERENCES COMTRADE.cfg (id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+/*
+ * Checking column "n" for table "COMTRADE.dat"
+ */
+ALTER TABLE comtrade.dat DROP CONSTRAINT IF EXISTS dat_n_check;
+ALTER TABLE comtrade.dat ADD CHECK (public.fc_arr_int8_chk(n, 1, 9999999999));
+
 RESET ROLE;

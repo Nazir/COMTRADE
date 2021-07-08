@@ -24,17 +24,19 @@ DECLARE
   line_var text;
   values_var text[];
   value_var text;
-  tt_var int;
-  nn_a_var int;
-  nn_d_var int;
-  nrates_var int;
-  samp_var int[];
-  channel_a_var int[][];
-  channel_d_var int[][];
-  endsamp_var int[];
+
+  tt_var int4;
+  nn_a_var int4;
+  nn_d_var int4;
+  nrates_var int4;
+  samp_var float4[];
+  -- channel_a_var int[][];
+  -- channel_d_var int[][];
+  endsamp_var int8[];
   ft_var varchar(8);
-  binary_bytes_var int; -- The number of bytes required for each sample in the file will be
-  -- rev_year_var int;
+  -- rev_year_var int2;
+
+  binary_bytes_var int4; -- The number of bytes required for each sample in the file will be
 
   temp_a_var text;
   temp_d_var text;
@@ -44,7 +46,7 @@ DECLARE
   ch_var int;
   i int;
   i2 int;
-  ii int;
+  ii int8;
   b bytea;
 BEGIN
   IF TG_OP IN ('INSERT', 'UPDATE') THEN
@@ -61,7 +63,7 @@ BEGIN
 
         file_content_var = NEW.file_content;
 
-        SELECT tt, nn_a, nn_d, nrates, samp, endsamp, upper(trim(ft)) FROM comtrade.cfg WHERE id = NEW.id_cfg
+        SELECT tt, nn_a, nn_d, nrates, samp, endsamp, ft FROM comtrade.cfg WHERE id = NEW.id_cfg
         INTO tt_var, nn_a_var, nn_d_var, nrates_var, samp_var, endsamp_var, ft_var;
 
         IF ft_var = 'ASCII' THEN
@@ -97,13 +99,13 @@ BEGIN
                     IF COALESCE(value_var, '') = '' THEN
                         value_var = '0' || trim(value_var);
                     END IF;
-                    NEW.n = array_append(NEW.n::int[], value_var::int);
+                    NEW.n = array_append(NEW.n::int8[], value_var::int8);
 
                     value_var = values_var[2];
                     IF COALESCE(value_var, '') = '' THEN
                         value_var = '0' || trim(value_var);
                     END IF;
-                    NEW.timestamp = array_append(NEW.timestamp::int[], value_var::int);
+                    NEW.timestamp = array_append(NEW.timestamp::int8[], value_var::int8);
 
                     ch_var := 1;
                     -- channel_a_var = NULL;
@@ -136,15 +138,15 @@ BEGIN
                     IF ft_var IN ('BINARY', 'BINARY32') THEN
                         b = '\x';
                         FOR i IN REVERSE 4..1 LOOP
-                            b = b || substr(file_content_var, i + binary_bytes_var * ii, 1); 
+                            b = b || substr(file_content_var, (i + binary_bytes_var * ii)::int4, 1); 
                         END LOOP;
-                        NEW.n = array_append(NEW.n::int[], ('x' || encode(b, 'hex'))::bit(32)::int);
+                        NEW.n = array_append(NEW.n::int8[], ('x' || encode(b, 'hex'))::bit(32)::int8);
 
                         b = '\x';
                         FOR i IN REVERSE 8..5 LOOP
-                            b = b || substr(file_content_var, i + binary_bytes_var * ii, 1); 
+                            b = b || substr(file_content_var, (i + binary_bytes_var * ii)::int4, 1); 
                         END LOOP;
-                        NEW.timestamp = array_append(NEW.timestamp::int[], ('x' || encode(b, 'hex'))::bit(32)::int);
+                        NEW.timestamp = array_append(NEW.timestamp::int8[], ('x' || encode(b, 'hex'))::bit(32)::int8);
                     END IF;
 
                     ch_var := 1;
@@ -155,7 +157,7 @@ BEGIN
                             b = '\x';
                             -- RAISE EXCEPTION 'STOP TESTING! "%"', (ch_var * 2 + 8);
                             FOR i IN REVERSE (ch_var * 2 + 8)..(ch_var * 2 + 8 - 1) LOOP
-                                b = b || substr(file_content_var, i + binary_bytes_var * ii, 1); 
+                                b = b || substr(file_content_var, (i + binary_bytes_var * ii)::int4, 1); 
                             END LOOP;
 
                             -- value_var = ('x' || encode(b, 'hex'))::bit(16)::int::text;
@@ -174,7 +176,7 @@ BEGIN
                         -- RAISE EXCEPTION 'STOP TESTING! %', (binary_bytes_var - floor(nn_d_var/16));
                         -- FOR i IN REVERSE binary_bytes_var..(binary_bytes_var - floor(nn_d_var/16) - 1) LOOP
                         FOR i IN (binary_bytes_var - floor(nn_d_var/16) - 1)..binary_bytes_var LOOP
-                            b = substr(file_content_var, i + binary_bytes_var * ii, 1) || b;
+                            b = substr(file_content_var, (i + binary_bytes_var * ii)::int4, 1) || b;
                             -- RAISE NOTICE 'b="%"" bit_length(b)="%" i="%" i_="%" ', b::TEXT, bit_length(b), i, (i + 1) % 2;
                             IF (i + 1) % 2 > 0 THEN
                                 FOR i2 IN 0..bit_length(b) - 1 LOOP
@@ -220,8 +222,8 @@ BEGIN
             temp2_a_var = '{' || temp2_a_var || '}';
             -- RAISE NOTICE '%. temp2_a_var="%"', ii, temp2_a_var;
             temp2_d_var = '{' || temp2_d_var || '}';
-            NEW.channel_a = CAST(temp2_a_var AS real[][]);
-            NEW.channel_d = CAST(temp2_d_var AS int[][]);
+            NEW.channel_a = CAST(temp2_a_var AS float8[][]);
+            NEW.channel_d = CAST(temp2_d_var AS int2[][]);
             -- RAISE EXCEPTION 'temp2_var="%".', temp2_var;
 
             nrates_var = nrates_var - 1;

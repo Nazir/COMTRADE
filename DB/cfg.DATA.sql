@@ -4,8 +4,7 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Filling data for table "COMTRADE.cfg"
- * cfg
- * Файл с конфигурацией (*.cfg)
+ * A file with the configuration (*.cfg)
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -16,6 +15,7 @@ BEGIN;
 
 -- TRUNCATE TABLE COMTRADE.cfg;
 -- DELETE FROM COMTRADE.cfg;
+-- ALTER SEQUENCE COMTRADE.cfg_id_seq RESTART WITH 1;
 
 DO $BODY$
 DECLARE
