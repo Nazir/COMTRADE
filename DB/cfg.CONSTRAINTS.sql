@@ -4,7 +4,6 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Constraints for table "COMTRADE.cfg"
- * A file with the configuration (*.cfg)
  */
 
 SET CLIENT_ENCODING TO 'UTF8';

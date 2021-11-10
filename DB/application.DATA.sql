@@ -4,7 +4,6 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Filling data for table "sys.application"
- * Application
  */
 
 SET CLIENT_ENCODING TO 'UTF8';

@@ -5,19 +5,6 @@
  *
  * Table: "COMTRADE.cfg"
  * A file with the configuration (*.cfg)
- *
- * IEC 60255-24
- * Edition 2.0    2013-04
- * INTERNATIONAL STANDARD IEEE Std C37.111
- * INTERNATIONAL ELECTROTECHNICAL COMMISSION
- * Measuring relays and protection equipment –
- * Part 24: Common format for transient data exchange (COMTRADE) for power systems
- * IEEE Standard Common Format for Transient Data Exchange (COMTRADE) for Power Systems
- * IEEE Std C37.111-2013
- * previous IEEE Std C37.111-1999 (Revision of IEEE Std C37.111-1991)
- *
- * IEC 60255-24:2013
- * IEEE Std C37.111-2013
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -133,23 +120,6 @@ ALTER TABLE IF EXISTS COMTRADE.cfg ALTER COLUMN id SET DEFAULT nextval('COMTRADE
 -- \i cfg.TRIGGERS.sql
 
 /*
- * Security
- */
-ALTER TABLE IF EXISTS COMTRADE.cfg OWNER TO role_owner;
-GRANT ALL ON COMTRADE.cfg TO role_owner;
--- GRANT SELECT, REFERENCES ON COMTRADE.cfg TO PUBLIC;
-/*
- * Columns security
- */
-/*
- * Sequences security
- */
-ALTER SEQUENCE IF EXISTS COMTRADE.cfg_id_seq OWNER TO role_owner;
--- ALTER SEQUENCE IF EXISTS COMTRADE.cfg_id_seq OWNED BY NONE;
-ALTER SEQUENCE IF EXISTS COMTRADE.cfg_id_seq OWNED BY COMTRADE.cfg.id;
-GRANT ALL ON SEQUENCE COMTRADE.cfg_id_seq TO role_owner;
-
-/*
  * Comments
  */
 COMMENT ON TABLE COMTRADE.cfg IS 'A file with the configuration (*.cfg)';
@@ -210,7 +180,12 @@ COMMENT ON COLUMN COMTRADE.cfg.tmq_code IS 'Is the time quality indicator code o
 COMMENT ON COLUMN COMTRADE.cfg.leapsec IS 'Is the leap second indicator. It indicates that a leap second may have been added or deleted during the recording resulting in either two pieces of data having the same Second of Century time stamp or a missing second.';
 
 /*
- * Filling data for table "COMTRADE.cfg"
+ * Security
+ */
+-- \i cfg.SEC.sql
+
+/*
+ * Filling data
  */
 -- \i cfg.DATA.sql
 

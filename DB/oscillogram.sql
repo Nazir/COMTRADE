@@ -49,25 +49,6 @@ ALTER TABLE IF EXISTS COMTRADE.oscillogram ALTER COLUMN id SET DEFAULT nextval('
 -- \i oscillogram.TRIGGERS.sql
 
 /*
- * Security
- */
-ALTER TABLE IF EXISTS COMTRADE.oscillogram OWNER TO role_owner;
-GRANT ALL ON COMTRADE.oscillogram TO role_owner;
--- GRANT SELECT, REFERENCES ON COMTRADE.oscillogram TO PUBLIC;
-/*
- * Columns security
- */
--- REVOKE INSERT(hits), UPoscillogramE(hits) ON COMTRADE.oscillogram FROM GROUP role_guest;
--- GRANT UPoscillogramE(hits) ON COMTRADE.oscillogram TO role_guest;
-/*
- * Sequences security
- */
-ALTER SEQUENCE IF EXISTS COMTRADE.oscillogram_id_seq OWNER TO role_owner;
--- ALTER SEQUENCE IF EXISTS COMTRADE.oscillogram_id_seq OWNED BY NONE;
-ALTER SEQUENCE IF EXISTS COMTRADE.oscillogram_id_seq OWNED BY COMTRADE.oscillogram.id;
-GRANT ALL ON SEQUENCE COMTRADE.oscillogram_id_seq TO role_owner;
-
-/*
  * Comments
  */
 COMMENT ON TABLE COMTRADE.oscillogram IS 'Oscillogram';
@@ -79,8 +60,13 @@ COMMENT ON COLUMN COMTRADE.oscillogram.time IS 'Time stamp. Non-critical if nrat
 COMMENT ON COLUMN COMTRADE.oscillogram.analogue_signal IS '';
 
 /*
- * Filling oscillograma for table "COMTRADE.oscillogram"
+ * Security
  */
--- \i oscillogram.oscillogramA.sql
+-- \i oscillogram.SEC.sql
+
+/*
+ * Filling data
+ */
+-- \i oscillogram.DATA.sql
 
 RESET ROLE;

@@ -7,8 +7,6 @@
 
 DO $BODY$
 DECLARE
-  name_var text;
-
   n_var int;
 
   id_dat_var mini.dm_id;
@@ -25,9 +23,6 @@ DECLARE
   temp_var text;
 
 BEGIN
-
-    --name_var = 'test1.cfg';
-
     CREATE TEMPORARY TABLE _c ON COMMIT DROP AS
     SELECT
       c.id AS id_cfg
@@ -38,6 +33,7 @@ BEGIN
     , unnest(c.channels_a_b) AS channels_a_b
     FROM comtrade.cfg AS c
     WHERE TRUE
+        AND c.name LIKE 'test%.cfg'
         --AND c.name LIKE 'test1.cfg'
         --AND c.id = t1.id_cfg
         --AND c.channel_a_an = 1
@@ -108,7 +104,8 @@ BEGIN
             ) AS c
         INNER JOIN (SELECT row_number () OVER (ORDER BY unnest(d.n)) AS row, d.id AS id, unnest(d.n) AS n, d.timestamp, d.channel_a, d.channel_d FROM comtrade.dat AS d INNER JOIN comtrade.cfg AS c ON c.id = d.id_cfg
             WHERE TRUE
-                AND c.name LIKE 'test1.cfg'
+                AND c.name LIKE 'test%.cfg'
+                --AND c.name LIKE 'test1.cfg'
                 --AND c.id = t1.id_cfg
         ) AS d ON TRUE
     WHERE TRUE

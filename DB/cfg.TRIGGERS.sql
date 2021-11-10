@@ -4,7 +4,6 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Triggers for table "COMTRADE.cfg"
- * A file with the configuration (*.cfg)
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -361,8 +360,8 @@ ALTER FUNCTION COMTRADE.fc_tr_biu_cfg() OWNER TO role_owner;
 /*
  * Trigger: "tr_biu"
  */
-DROP TRIGGER IF EXISTS tr_biu ON COMTRADE.cfg;
-CREATE TRIGGER tr_biu
+-- DROP TRIGGER IF EXISTS tr_biu ON COMTRADE.cfg;
+CREATE OR REPLACE TRIGGER tr_biu
   BEFORE INSERT OR UPDATE OF file_content
   ON COMTRADE.cfg
   FOR EACH ROW
@@ -371,8 +370,8 @@ CREATE TRIGGER tr_biu
 -- /*
 --  * Trigger: "tr_biud"
 --  */
--- DROP TRIGGER IF EXISTS tr_biud ON COMTRADE.cfg;
--- CREATE TRIGGER tr_biud
+-- -- DROP TRIGGER IF EXISTS tr_biud ON COMTRADE.cfg;
+-- CREATE OR REPLACE TRIGGER tr_biud
 --   BEFORE INSERT OR DELETE OR UPDATE OF id_app, name, file_name, file_content, _date_create, _user_create, _date_update, _user_update, _uuid, _version, _deleted
 --   ON COMTRADE.cfg
 --   FOR EACH ROW
@@ -381,8 +380,8 @@ CREATE TRIGGER tr_biu
 -- /*
 --  * Trigger: "tr_data_history"
 --  */
--- DROP TRIGGER IF EXISTS tr_data_history ON COMTRADE.cfg;
--- CREATE TRIGGER tr_data_history
+-- -- DROP TRIGGER IF EXISTS tr_data_history ON COMTRADE.cfg;
+-- CREATE OR REPLACE TRIGGER tr_data_history
 --   BEFORE INSERT OR DELETE OR UPDATE OF id_app, name, file_name, file_content, _date_create, _user_create, _date_update, _user_update, _uuid, _version, _deleted
 --   ON COMTRADE.cfg
 --   FOR EACH ROW

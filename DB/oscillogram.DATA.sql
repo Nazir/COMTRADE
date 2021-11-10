@@ -1,0 +1,1 @@
+ALTER SEQUENCE COMTRADE.oscillogram_id_seq RESTART WITH 1;

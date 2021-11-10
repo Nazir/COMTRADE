@@ -3,8 +3,7 @@
  *
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
- * Filling data for table "с.dat"
- * The data file (*.dat)
+ * Filling data for table "COMTRADE.dat"
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -29,25 +28,25 @@ BEGIN
     INSERT INTO COMTRADE.dat(
       id           -- ID (Identifier)
     , id_cfg       -- ID Cfg
-    , name         -- Наименование
-    , file_name    -- Имя файла
-    -- , file_content -- Содержимое файла
+    , name         -- Name
+    , file_name    -- File name
+    -- , file_content -- File contents
 
     , _deleted     -- The record is deleted?
     ) VALUES (
       DEFAULT    -- ID (Identifier)
     , id_cfg_var -- ID Cfg
-    , 'test1.ascii.dat' -- Наименование
-    , 'test1.ascii.dat' -- Имя файла
-    -- , pg_read_binary_file('test.dat') -- Содержимое файла
+    , 'test1.ascii.dat' -- Name
+    , 'test1.ascii.dat' -- File name
+    -- , pg_read_binary_file('test.dat') -- File contents
 
     , FALSE)
     ON CONFLICT DO NOTHING
     -- ON CONFLICT (name) DO UPDATE SET
     --   id_cfg = EXCLUDED.id_cfg,             -- ID Cfg
-    --   name = EXCLUDED.name,                 -- Наименование
-    --   file_name = EXCLUDED.file_name,       -- Имя файла
-    --   file_content = EXCLUDED.file_content, -- Содержимое файла
+    --   name = EXCLUDED.name,                 -- Name
+    --   file_name = EXCLUDED.file_name,       -- File name
+    --   file_content = EXCLUDED.file_content, -- File contents
 
     --   _deleted = EXCLUDED._deleted          -- The record is deleted?
     ;
@@ -59,25 +58,25 @@ BEGIN
     INSERT INTO COMTRADE.dat(
       id           -- ID (Identifier)
     , id_cfg       -- ID Cfg
-    , name         -- Наименование
-    , file_name    -- Имя файла
-    -- , file_content -- Содержимое файла
+    , name         -- Name
+    , file_name    -- File name
+    -- , file_content -- File contents
 
     , _deleted     -- The record is deleted?
     ) VALUES (
       DEFAULT    -- ID (Identifier)
     , id_cfg_var -- ID Cfg
-    , 'test1.binary.dat' -- Наименование
-    , 'test1.binary.dat' -- Имя файла
-    -- , pg_read_binary_file('test1.binary.dat') -- Содержимое файла
+    , 'test1.binary.dat' -- Name
+    , 'test1.binary.dat' -- File name
+    -- , pg_read_binary_file('test1.binary.dat') -- File contents
 
     , FALSE)
     ON CONFLICT DO NOTHING
     -- ON CONFLICT (name) DO UPDATE SET
     --   id_cfg = EXCLUDED.id_cfg,             -- ID Cfg
-    --   name = EXCLUDED.name,                 -- Наименование
-    --   file_name = EXCLUDED.file_name,       -- Имя файла
-    --   file_content = EXCLUDED.file_content, -- Содержимое файла
+    --   name = EXCLUDED.name,                 -- Name
+    --   file_name = EXCLUDED.file_name,       -- File name
+    --   file_content = EXCLUDED.file_content, -- File contents
 
     --   _deleted = EXCLUDED._deleted          -- The record is deleted?
     ;

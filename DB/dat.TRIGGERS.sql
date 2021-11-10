@@ -4,7 +4,6 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Triggers for table "COMTRADE.dat"
- * Data file (*.dat)
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -249,8 +248,8 @@ ALTER FUNCTION COMTRADE.fc_tr_biu_dat() OWNER TO role_owner;
 /*
  * Trigger: "tr_biu"
  */
-DROP TRIGGER IF EXISTS tr_biu ON COMTRADE.dat;
-CREATE TRIGGER tr_biu
+-- DROP TRIGGER IF EXISTS tr_biu ON COMTRADE.dat;
+CREATE OR REPLACE TRIGGER tr_biu
   BEFORE INSERT OR UPDATE OF file_content
   ON COMTRADE.dat
   FOR EACH ROW

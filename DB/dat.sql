@@ -55,24 +55,6 @@ ALTER TABLE IF EXISTS COMTRADE.dat ALTER COLUMN id SET DEFAULT nextval('COMTRADE
 -- \i dat.TRIGGERS.sql
 
 /*
- * Security
- */
-ALTER TABLE IF EXISTS COMTRADE.dat OWNER TO role_owner;
-GRANT ALL ON COMTRADE.dat TO role_owner;
--- GRANT SELECT, REFERENCES ON COMTRADE.dat TO PUBLIC;
-/*
- * Columns security
- */
-
-/*
- * Sequences security
- */
-ALTER SEQUENCE IF EXISTS COMTRADE.dat_id_seq OWNER TO role_owner;
--- ALTER SEQUENCE IF EXISTS COMTRADE.dat_id_seq OWNED BY NONE;
-ALTER SEQUENCE IF EXISTS COMTRADE.dat_id_seq OWNED BY COMTRADE.dat.id;
-GRANT ALL ON SEQUENCE COMTRADE.dat_id_seq TO role_owner;
-
-/*
  * Comments
  */
 COMMENT ON TABLE COMTRADE.dat IS 'The data file (*.dat)';
@@ -88,7 +70,12 @@ COMMENT ON COLUMN COMTRADE.dat.channel_a IS 'Analog channel data values';
 COMMENT ON COLUMN COMTRADE.dat.channel_d IS 'Status channel data values';
 
 /*
- * Filling data for table "COMTRADE.dat"
+ * Security
+ */
+-- \i dat.SEC.sql
+
+/*
+ * Filling data
  */
 -- \i dat.DATA.sql
 

@@ -4,8 +4,6 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Filling data for table "sys.config"
- * Configuration
- * Конфигурация
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
@@ -29,9 +27,9 @@ BEGIN
     INSERT INTO sys.config(
       id         -- ID (Identifier)
     , id_app     -- ID Приложения
-    , debug      -- Отладочная конфигурация
-    , name       -- Наименование (доменное имя для веб-сайта)
-    , attributes -- Атрибуты
+    , debug      -- Configuration for debugging
+    , name       -- Name (e.g. domain name for a website)
+    , attributes -- Attributes
 
     , _deleted
     ) VALUES (

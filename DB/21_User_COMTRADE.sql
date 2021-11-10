@@ -4,7 +4,6 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Creating a "COMTRADE" user for a project "COMTRADE"
- * Создание пользователя "COMTRADE" для проекта "COMTRADE"
  */
 
 SET CLIENT_ENCODING TO 'UTF8';

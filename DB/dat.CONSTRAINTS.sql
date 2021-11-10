@@ -4,7 +4,6 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Constraints for table "COMTRADE.dat"
- * The data file (*.dat)
  */
 
 SET CLIENT_ENCODING TO 'UTF8';

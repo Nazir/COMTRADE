@@ -4,7 +4,6 @@
  * (c) Nazir Khusnutdinov <nazir@nazir.pro>
  *
  * Schema: "COMTRADE"
- * Создание схемы базы данных "COMTRADE"
  */
 
 SET CLIENT_ENCODING TO 'UTF8';
